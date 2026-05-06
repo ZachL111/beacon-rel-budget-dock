@@ -1,69 +1,40 @@
 # beacon-rel-budget-dock
 
-`beacon-rel-budget-dock` explores reliability in Solidity. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`beacon-rel-budget-dock` keeps a focused Solidity implementation around reliability. The project goal is to develop a Solidity command-oriented project for budget scenarios with seeded input scenarios, deterministic summary checks, and single-node deterministic mode.
 
-## Beacon Rel Budget Dock Notes
+## Use Case
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Why This Exists
+## Beacon Rel Budget Dock Review Notes
 
-This is not a wrapper around a service. It is a self-contained project that shows how the model behaves when demand, capacity, latency, risk, and weight move in different directions.
+For a quick review, compare `failure width` with `runbook drift` before reading the middle cases.
 
-## Example Scenarios
+## Highlights
 
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
+- `fixtures/domain_review.csv` adds cases for budget pressure and failure width.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/beacon-rel-budget-walkthrough.md` walks through the case spread.
+- The Solidity code includes a review path for `failure width` and `runbook drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Implementation Notes
+## Code Layout
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps failure windows, retry budgets, and runbook checks in one explicit decision path. The threshold is 184, with risk penalty 5, latency penalty 2, and weight bonus 2. The Solidity project uses Foundry tests and pure contract functions so invariants are cheap to exercise.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Feature Notes
+The Solidity checks add a pure review lens and Foundry coverage.
 
-- Models failure windows with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep retry budgets changes visible in code review.
-- Includes extended examples for runbook checks, including `surge` and `degraded`.
-- Documents recovery paths tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-
-## Try It
+## Run The Check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Regression Path
 
-## Tests
+The same command runs the local verification path. The highest-scoring domain case is `stress` at 228, which lands in `ship`. The most cautious case is `recovery` at 131, which lands in `watch`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Future Work
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Code Tour
-
-- `src`: primary implementation
-- `test`: language test directory
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `foundry.toml`: Foundry project configuration
-
-## Roadmap
-
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Add one more reliability fixture that focuses on a malformed or borderline input.
-
-## Boundaries
-
-The examples cover useful edges, not every edge. A larger version would add malformed-input tests, richer reports, and deeper domain parsers.
-
-## Local Setup
-
-Use a normal shell with Solidity available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
+This remains a local project with deterministic fixtures. It does not depend on credentials, hosted services, or live data. Future work should add richer malformed inputs before widening the public API.

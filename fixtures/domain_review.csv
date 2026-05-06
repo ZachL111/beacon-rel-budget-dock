@@ -1,0 +1,6 @@
+name,focus,signal,slack,drag,confidence,score,lane
+baseline,budget pressure,64,37,17,83,197,ship
+stress,failure width,71,34,9,79,228,ship
+edge,recovery gap,54,23,29,91,135,watch
+recovery,runbook drift,55,28,21,56,131,watch
+stale,budget pressure,68,20,10,72,198,ship

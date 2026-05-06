@@ -1,0 +1,73 @@
+{
+  "repo": "beacon-rel-budget-dock",
+  "language": "Solidity",
+  "category": "Reliability",
+  "goal": "Develop a Solidity command-oriented project for budget scenarios with seeded input scenarios, deterministic summary checks, and single-node deterministic mode.",
+  "review_model": {
+    "terms": [
+      "budget pressure",
+      "failure width",
+      "recovery gap",
+      "runbook drift"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "budget pressure",
+      "signal": 64,
+      "slack": 37,
+      "drag": 17,
+      "confidence": 83,
+      "score": 197,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "failure width",
+      "signal": 71,
+      "slack": 34,
+      "drag": 9,
+      "confidence": 79,
+      "score": 228,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "recovery gap",
+      "signal": 54,
+      "slack": 23,
+      "drag": 29,
+      "confidence": 91,
+      "score": 135,
+      "lane": "watch"
+    },
+    {
+      "name": "recovery",
+      "focus": "runbook drift",
+      "signal": 55,
+      "slack": 28,
+      "drag": 21,
+      "confidence": 56,
+      "score": 131,
+      "lane": "watch"
+    },
+    {
+      "name": "stale",
+      "focus": "budget pressure",
+      "signal": 68,
+      "slack": 20,
+      "drag": 10,
+      "confidence": 72,
+      "score": 198,
+      "lane": "ship"
+    }
+  ]
+}
